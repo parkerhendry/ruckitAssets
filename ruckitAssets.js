@@ -139,14 +139,13 @@ geotab.addin.ruckitAssets = function () {
                         ${escapeHtml(assetName)}
                     </td>
                     <td>
-                        <span class="badge bg-orange text-white">${escapeHtml(ruckitDevice)}</span>
+                        ${escapeHtml(ruckitDevice)}
                     </td>
                     <td>
-                        <i class="fas fa-user me-2 text-secondary"></i>
                         ${escapeHtml(ruckitDriver)}
                     </td>
                     <td>
-                        <code class="text-muted">${escapeHtml(ruckitToken)}</code>
+                        ${escapeHtml(ruckitToken)}
                     </td>
                     <td>
                         ${viewAssetButton}
