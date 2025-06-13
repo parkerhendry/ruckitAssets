@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruckit Assets</title>
+    <link rel="stylesheet" href="ruckitAssets.css">
+</head>
+<body>
+    <div id="ruckitAssets" class="ruckit-container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="company-logo">
+                        <!-- Replace with your actual logo -->
+                        <svg width="60" height="60" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="25" fill="#FF6B35" stroke="#2E86AB" stroke-width="3"/>
+                            <text x="30" y="37" text-anchor="middle" fill="white" font-size="20" font-weight="bold">R</text>
+                        </svg>
+                    </div>
+                    <div class="title-section">
+                        <h1>Ruckit Assets</h1>
+                        <p class="subtitle">Device Mapping Management</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="exportBtn" class="action-btn export-btn">
+                        <span class="btn-icon">📋</span>
+                        Export CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="alertContainer" class="alert-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Assets</span>
+                        <span class="stat-value" id="totalAssets">-</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Updated</span>
+                        <span class="stat-value" id="lastUpdated">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div id="mappingsTable" class="table-wrapper">
+                <!-- Table will be populated by JavaScript -->
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Loading Ruckit assets...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-content">
+                <p>© 2025 Traxxis GPS Solutions, Inc. All rights reserved.</p>
+                <div class="footer-actions">
+                    <span class="keyboard-hint">Press Ctrl+R to refresh • Ctrl+E to export</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update stats when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
+        });
+
+        // Update total assets count
+        function updateAssetCount(count) {
+            document.getElementById('totalAssets').textContent = count;
+        }
+
+        // Update last updated time
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
+        }
+
+        // Make functions available globally for the add-in
+        window.updateAssetCount = updateAssetCount;
+        window.updateLastUpdated = updateLastUpdated;
+    </script>
+</body>
+</html>
