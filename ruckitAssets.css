@@ -286,27 +286,36 @@ body {
     font-weight: 600;
 }
 
-.table tbody td:nth-child(2) .badge {
-    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%) !important;
-    color: white !important;
-    font-weight: 500;
-    padding: 0.4rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-}
-
-.table tbody td:nth-child(3) {
-    color: var(--text-muted);
+/* Ruckit Device, Driver, and Token columns - normal text styling */
+.table tbody td:nth-child(2),
+.table tbody td:nth-child(3),
+.table tbody td:nth-child(4) {
+    color: #333;
     font-weight: 500;
 }
 
+/* Remove special styling from badges and code elements in these columns */
+.table tbody td:nth-child(2) .badge,
+.table tbody td:nth-child(3) .badge,
+.table tbody td:nth-child(4) .badge {
+    background: none !important;
+    color: #333 !important;
+    font-weight: 500;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+}
+
+.table tbody td:nth-child(2) code,
+.table tbody td:nth-child(3) code,
 .table tbody td:nth-child(4) code {
-    background-color: #f8f9fa;
-    color: var(--text-muted);
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    border: 1px solid var(--border-grey);
+    background-color: transparent;
+    color: #333;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+    border: none;
+    font-family: inherit;
 }
 
 .table tbody td:nth-child(5) {
