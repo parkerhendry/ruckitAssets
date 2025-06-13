@@ -107,25 +107,25 @@ geotab.addin.ruckitAssets = function () {
 
         if (ruckitMappings.length === 0) {
             tableContainer.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">📊</div>
-                    <h3>No Ruckit Assets Found</h3>
-                    <p>There are currently no Ruckit device mappings configured in this database.</p>
+                <div class="empty-state text-center p-5">
+                    <div class="empty-icon mb-3" style="font-size: 4rem;">📊</div>
+                    <h3 class="mb-3">No Ruckit Assets Found</h3>
+                    <p class="text-muted">There are currently no Ruckit device mappings configured in this database.</p>
                 </div>
             `;
             return;
         }
 
         const tableHtml = `
-            <div class="table-container">
-                <table class="ruckit-table">
-                    <thead>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <th>Asset Name</th>
-                            <th>Ruckit Device</th>
-                            <th>Ruckit Driver</th>
-                            <th>Ruckit Token</th>
-                            <th>Actions</th>
+                            <th scope="col">Asset Name</th>
+                            <th scope="col">Ruckit Device</th>
+                            <th scope="col">Ruckit Driver</th>
+                            <th scope="col">Ruckit Token</th>
+                            <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,16 +139,16 @@ geotab.addin.ruckitAssets = function () {
                             
                             return `
                                 <tr>
-                                    <td class="asset-name">${name}</td>
+                                    <td class="fw-bold text-primary">${name}</td>
                                     <td>${riDevice}</td>
                                     <td>${riDriver}</td>
-                                    <td class="token-cell">${riToken}</td>
-                                    <td class="action-cell">
+                                    <td><code class="text-muted">${riToken}</code></td>
+                                    <td class="text-center">
                                         ${gtDevice ? 
-                                            `<button class="view-asset-btn" onclick="window.open('https://my.geotab.com/traxxisdemo/#device,id:${gtDevice}', '_blank')">
-                                                View Asset
+                                            `<button class="btn btn-warning btn-sm" onclick="window.open('https://my.geotab.com/traxxisdemo/#device,id:${gtDevice}', '_blank')">
+                                                <i class="fas fa-external-link-alt me-1"></i>View Asset
                                             </button>` :
-                                            '<span class="no-device">No Device ID</span>'
+                                            '<span class="text-muted fst-italic">No Device ID</span>'
                                         }
                                     </td>
                                 </tr>
@@ -157,18 +157,26 @@ geotab.addin.ruckitAssets = function () {
                     </tbody>
                 </table>
             </div>
-            <div class="table-footer">
-                <div class="record-count">
+            <div class="d-flex justify-content-between align-items-center p-3 bg-light border-top">
+                <div class="text-muted">
                     Showing ${ruckitMappings.length} asset${ruckitMappings.length !== 1 ? 's' : ''}
                 </div>
-                <button class="refresh-btn" onclick="window.refreshRuckitData()">
-                    <span class="refresh-icon">⟳</span>
+                <button class="btn btn-primary btn-sm" onclick="window.refreshRuckitData()">
+                    <i class="fas fa-sync-alt me-1"></i>
                     Refresh
                 </button>
             </div>
         `;
 
         tableContainer.innerHTML = tableHtml;
+        
+        // Update stats
+        if (window.updateAssetCount) {
+            window.updateAssetCount(ruckitMappings.length);
+        }
+        if (window.updateLastUpdated) {
+            window.updateLastUpdated();
+        }
     }
 
     /**
