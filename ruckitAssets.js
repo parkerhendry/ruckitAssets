@@ -9,6 +9,38 @@ geotab.addin.ruckitAssets = function () {
     let state;
     let elAddin;
     let assetsData = [];
+    let currentSubdomain = '';
+
+    /**
+     * Extract subdomain from current URL
+     */
+    function extractSubdomain() {
+        try {
+            const url = window.location.href;
+            // Extract subdomain from URL like "https://my.geotab.com/traxxisdemo/#..."
+            const match = url.match(/https?:\/\/my\.geotab\.com\/([^\/\#]+)/);
+            if (match && match[1]) {
+                currentSubdomain = match[1];
+                console.log('Extracted subdomain:', currentSubdomain);
+            } else {
+                console.warn('Could not extract subdomain from URL:', url);
+                currentSubdomain = '';
+            }
+        } catch (error) {
+            console.error('Error extracting subdomain:', error);
+            currentSubdomain = '';
+        }
+    }
+
+    /**
+     * Generate View Asset URL
+     */
+    function generateViewAssetUrl(gtDevice) {
+        if (!currentSubdomain || !gtDevice) {
+            return '#';
+        }
+        return `https://my.geotab.com/${currentSubdomain}/#device,id:${gtDevice}`;
+    }
 
     /**
      * Make a Geotab API call
@@ -90,6 +122,15 @@ geotab.addin.ruckitAssets = function () {
             const ruckitDevice = details['ri-device'] || 'N/A';
             const ruckitDriver = details['ri-driver'] || 'N/A';
             const ruckitToken = details['ri-token'] || 'N/A';
+            const gtDevice = details['gt-device'] || '';
+            
+            const viewAssetUrl = generateViewAssetUrl(gtDevice);
+            const viewAssetButton = gtDevice ? 
+                `<a href="${viewAssetUrl}" class="btn-view-asset" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    View Asset
+                </a>` : 
+                `<span class="text-muted">No Device ID</span>`;
             
             return `
                 <tr>
@@ -107,6 +148,9 @@ geotab.addin.ruckitAssets = function () {
                     <td>
                         <code class="text-muted">${escapeHtml(ruckitToken)}</code>
                     </td>
+                    <td>
+                        ${viewAssetButton}
+                    </td>
                 </tr>
             `;
         }).join('');
@@ -123,7 +167,7 @@ geotab.addin.ruckitAssets = function () {
         
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4">
+                <td colspan="5">
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <h5>No Ruckit Assets Found</h5>
@@ -227,6 +271,9 @@ geotab.addin.ruckitAssets = function () {
 
             elAddin = document.getElementById('ruckitAssets');
 
+            // Extract subdomain from current URL
+            extractSubdomain();
+
             if (state.translate) {
                 state.translate(elAddin || '');
             }
@@ -248,6 +295,9 @@ geotab.addin.ruckitAssets = function () {
         focus: function (freshApi, freshState) {
             api = freshApi;
             state = freshState;
+
+            // Re-extract subdomain in case URL changed
+            extractSubdomain();
 
             // Setup event listeners
             setupEventListeners();
